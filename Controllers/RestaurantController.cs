@@ -35,6 +35,7 @@ namespace RestaurantAPI.Controllers
         }
         //zwraca wszystkie rezultaty restauracji z BD do klienta
         [HttpGet]
+        [Authorize(Policy = "HasNationality")]
         public ActionResult<IEnumerable<RestaurantDto>> GetAll()
         {
             var restaurantsDtos = _restaurantService.GetAll();
