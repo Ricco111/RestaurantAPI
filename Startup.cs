@@ -58,7 +58,10 @@ namespace RestaurantAPI
             {
                 options.AddPolicy("HasNationality", builder => builder.RequireClaim("Nationality"));
                 options.AddPolicy("Atleast20", builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
+                options.AddPolicy("CratedAtleast2Restaurants", 
+                    builder => builder.AddRequirements(new CreatedMultipleRestaurantRequirement(2)));
             });
+            services.AddScoped<IAuthorizationHandler, CreatedMultipleRestaurantRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
             services.AddControllers().AddFluentValidation();

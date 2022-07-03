@@ -37,7 +37,7 @@ namespace RestaurantAPI.Services
             var restaurant = _dbContext
                 .Restaurants
                 .Include(r => r.Address)
-                .Include(r => r.Dishes)
+                .Include(r => r.Dishes)                
                 .FirstOrDefault(r => r.Id == id);
 
             if (restaurant is null) 
@@ -47,12 +47,14 @@ namespace RestaurantAPI.Services
             return result;
         }
 
-        public IEnumerable<RestaurantDto> GetAll()
+        public IEnumerable<RestaurantDto> GetAll(string searchPhrase)
         {
             var restaurants = _dbContext
                 .Restaurants
                 .Include(r => r.Address)
                 .Include(r => r.Dishes)
+                .Where(r => searchPhrase == null || (r.Name.ToLower().Contains(searchPhrase.ToLower())
+                                                    || r.Description.ToLower().Contains(searchPhrase.ToLower())))
                 .ToList();
 
             var restaurantsDtos = _mapper.Map<List<RestaurantDto>>(restaurants);

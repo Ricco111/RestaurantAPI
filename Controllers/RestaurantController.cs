@@ -35,15 +35,21 @@ namespace RestaurantAPI.Controllers
 
             return Created($"/api/restaurant/{id}", null);
         }
-        //zwraca wszystkie rezultaty restauracji z BD do klienta
+        
+
+
         [HttpGet]
-        [Authorize(Policy = "Atleast20")]
-        public ActionResult<IEnumerable<RestaurantDto>> GetAll()
+        //[Authorize(Policy = "CreatedAtleast2Restaurants")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery]string searchPhrase)
         {
-            var restaurantsDtos = _restaurantService.GetAll();
+            var restaurantsDtos = _restaurantService.GetAll(searchPhrase);
 
             return Ok(restaurantsDtos);
         }
+
+
+
         [HttpGet("{id}")]
         [AllowAnonymous]
         public ActionResult<RestaurantDto> Get([FromRoute] int id)
