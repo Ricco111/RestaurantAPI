@@ -26,6 +26,8 @@ namespace RestaurantAPI.Controllers
             _restaurantService = restaurantService;
         }
 
+
+
         [HttpPost]
         [Authorize(Roles = "Admin,Manager")]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
@@ -41,9 +43,9 @@ namespace RestaurantAPI.Controllers
         [HttpGet]
         //[Authorize(Policy = "CreatedAtleast2Restaurants")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery]string searchPhrase)
+        public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery]RestaurantQuery query)
         {
-            var restaurantsDtos = _restaurantService.GetAll(searchPhrase);
+            var restaurantsDtos = _restaurantService.GetAll(query);
 
             return Ok(restaurantsDtos);
         }
@@ -58,6 +60,8 @@ namespace RestaurantAPI.Controllers
 
             return Ok(restaurant);
         }
+
+
         [HttpDelete("{id}")]
         public ActionResult<RestaurantDto>Delete([FromRoute]int id)
         {
@@ -65,6 +69,8 @@ namespace RestaurantAPI.Controllers
             
             return NoContent();
         }
+
+
 
         [HttpPut("{id}")]
         public ActionResult<RestaurantDto> Update([FromBody] UpdateRestaurantDto dto,[FromRoute]int id)
